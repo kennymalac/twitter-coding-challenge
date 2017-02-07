@@ -1,0 +1,5 @@
+requests
+Flask
+Flask-Session
+Flask-OAuthlib
+Flask-Scss

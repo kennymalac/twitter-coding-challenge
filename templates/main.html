@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Twitter App</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link src="{{url_for('static', filename='css/app.css')}}" type="text/css"/>
+    </head>
+
+    <body>
+        <div class="container">
+            <p class="message" data-type=""></p>
+
+            <form class="form timeline-form">
+                <label for="text">
+                    Show public timeline for twitter user:
+                </label>
+
+                <input type="text" name="userid" />
+
+                <input type="submit" class="btn btn-primary" value="Show" />
+            </form>
+
+            <div class="tweet-list">
+            </div>
+        </div>
+
+
+        <div class="reply-modal modal">
+        </div>
+
+        <script id="list-tweets-template" type="x-tmpl-mustache">
+         {% raw %}
+         {{!Ideally I would use a build system like webpack to have this in a separate file/}}
+
+         {{#tweets}}
+         {{#.}}
+            <div class="tweet" data-id="{{tweet.id}}">
+                <div class="user-legend" data-id="{{user.id}}">
+                    <img src="{{user.profile_image_url}}" width="64" height="64" />
+                    <span class="name">
+                        {{user.screen_name}}
+                    </span>
+                    <span class="datetime">
+                        {{#momentizeUnix}}{{tweet.posted}}{{/momentizeUnix}}
+                    </span>
+                </div>
+                <div class="text">
+                    <p>{{tweet.text}}</p>
+                </div>
+                <div class="reply">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-arrow-right"></i>
+                        Reply
+                    </button>
+                </div>
+         </div>
+         {{/.}}
+         {{/tweets}}
+         {% endraw %}
+        </script>
+
+        <script id="tweet-reply-modal-template" type="x-tmpl-mustache">
+<div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Reply</h4>
+         <div class="modal-info">
+         {% raw %}
+         tweet id: {{tweet.id}}<br />
+         tweet text: {{tweet.text}}<br />
+         tweet author userid: {{user.id}}<br />
+         {% endraw %}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <label for="message">Message</label>
+                    <input type="text" name="message" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Send</button>
+                </div>
+            </div>
+        </div>
+        </script>
+
+
+        <script src="{{url_for('static', filename='lib/moment.min.js')}}"></script>
+        <script src="{{url_for('static', filename='lib/jquery-3.1.1.min.js')}}"></script>
+        <script src="{{url_for('static', filename='lib/underscore.min.js')}}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='lib/mustache.min.js')}}"></script>
+        <script src="{{url_for('static', filename='js/app.js')}}"></script>
+    </body>
+</html>
